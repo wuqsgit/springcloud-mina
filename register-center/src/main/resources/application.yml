@@ -1,0 +1,13 @@
+server:
+  port: 1111
+spring:
+  application:
+    name: register-center
+eureka:
+  client:
+    register-with-eureka: false #启动时不注册，来表示自己是一个注册中心
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:1111/eureka/
+  server:
+    enable-self-preservation: false #是否开启eureka服务器的自我保护

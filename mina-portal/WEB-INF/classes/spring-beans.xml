@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:c="http://www.springframework.org/schema/c" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd              
+             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+	<context:annotation-config />
+	<context:component-scan base-package="com.dangdang.mina"/>
+	
+	<import resource="classpath*:api-downgrade.xml"/>
+	<import resource="classpath*:spring-mybatis.xml"/>
+	<import resource="classpath*:outer-service-beans.xml"/>
+	<import resource="classpath*:outer-cache.xml" />
+	<import resource="classpath*:business-zk.xml" />
+	<import resource="classpath*:outer-zk.xml"/>
+	<import resource="classpath*:outer-cache-spring-template.xml"/>
+	
+	<bean id="messageMapping" class="com.dangdang.mina.controller.response.base.MessageMapping">
+		<constructor-arg name="msgMappingFile" value="response-status.properties"></constructor-arg>
+	</bean>
+	
+	<bean class="com.dangdang.mina.common.config.InstantiationProcessor"/> 
+	
+	<context:property-placeholder location="classpath*:*.properties" />
+</beans>  

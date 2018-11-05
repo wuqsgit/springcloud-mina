@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user -->
+<!-- -->
+<!-- For professional support please see -->
+<!-- http://www.qos.ch/shop/products/professionalSupport -->
+<!-- -->
+<configuration>
+	<property name="logBase" value="/usr/local/mina/logs" />
+	<property name="errorInfoLogBase" value="/usr/local/mina/logs" />
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{26}[%L] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="mysoft" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/dailylog.%d{yyyy-MM-dd_HH}</fileNamePattern>
+			<maxHistory>168</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}[%L] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>512</queueSize>
+  		<neverBlock>true</neverBlock>
+    	<includeCallerData>false</includeCallerData>
+		<appender-ref ref="mysoft" />
+	</appender>
+
+	<logger name="org.apache" level="INFO" />
+	<logger name="org.springframework" level="INFO" />
+	<logger name="com.dangdang" level="INFO" />
+	
+	<appender name="baseLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/apiLog/dailylog.%d{yyyy-MM-dd.HH}</fileNamePattern>
+			<maxHistory>168</maxHistory>
+		</rollingPolicy>
+		<encoder>    
+		      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}[%L] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="outerApiInvokeLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/outApiLog/dailylog.%d{yyyy-MM-dd.HH}</fileNamePattern>
+			<maxHistory>168</maxHistory>
+		</rollingPolicy>
+		<encoder>    
+		      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}[%L] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="errorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/errorlog.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>    
+		      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36}[%L] - %msg%n</pattern>
+		</encoder>
+	</appender>
+    
+    <appender name="redisLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/redisLog.%d{yyyy-MM-dd.HH}</fileNamePattern>
+			<maxHistory>168</maxHistory>
+		</rollingPolicy>
+		<encoder>    
+		      <pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="ehcacheLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/ehcacheLog.%d{yyyy-MM-dd.HH}</fileNamePattern>
+			<maxHistory>168</maxHistory>
+		</rollingPolicy>
+		<encoder>    
+		      <pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="redisErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/redisErrorLog.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>    
+		      <pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="outErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logBase}/outErrorLog.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>    
+		      <pattern>%d{HH:mm:ss.SSS} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+    <appender name="appError" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${errorInfoLogBase}/appError.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${errorInfoLogBase}/appError.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>360</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>	
+
+	<appender name="appErrorRedis" class="com.dangdang.modules.hestia.appenders.logback.RedisAppender">
+        <host>elkredis.idc3:8379</host>
+        <queueName>error_info</queueName>
+    </appender>
+    
+	<root level="INFO">
+		<appender-ref ref="stdout" />
+		<appender-ref ref="ASYNC" />
+	</root>
+	
+	<logger name="OuterApiInvokeLogUtil.BaseLogUtil" level="INFO">
+		<appender-ref ref="baseLog" />
+	</logger>
+	
+	<logger name="com.dangdang.cart.outer.log.util.OuterApiInvokeLogUtil" level="INFO">
+		<appender-ref ref="outerApiInvokeLog" />
+	</logger>
+
+	<logger name="errorLog" level="error" additivity="true">
+		<appender-ref ref="errorLog" />
+	</logger>
+	
+	<logger name="redisLog" level="info" additivity="false">
+		<appender-ref ref="redisLog" />
+	</logger>
+	
+	<logger name="ehcacheLog" level="info" additivity="false">
+		<appender-ref ref="ehcacheLog" />
+	</logger>
+
+	<logger name="redisErrorLog" level="warn" additivity="false">
+		<appender-ref ref="redisErrorLog" />
+	</logger>
+	
+	<logger name="outErrorLog" level="warn" additivity="false">
+		<appender-ref ref="outErrorLog" />
+	</logger>
+	
+	<logger name="application.error" level="INFO" additivity="false">
+        <appender-ref ref="appError" />
+        <appender-ref ref="appErrorRedis" />
+    </logger>
+	
+</configuration>

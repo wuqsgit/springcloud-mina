@@ -1,0 +1,61 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd              
+             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+    <context:annotation-config/>
+    <context:component-scan base-package="com.dangdang.mina.biz"/>
+  
+  <bean id="minaZKConfig" class="com.dangdang.config.service.zookeeper.ZookeeperConfigProfile">
+    <constructor-arg name="connectStr" value="${zk.mina.biz.connect_str}" />
+    <constructor-arg name="rootNode" value="${zk.mina.biz.root_node}" />
+    <constructor-arg name="version" value="${zk.mina.biz.version}" />
+  </bean>
+
+  <bean id="bookLetterConfig" class="com.dangdang.config.service.zookeeper.ZookeeperConfigGroup">
+    <constructor-arg name="node" value="bookLetterConfig" />
+    <constructor-arg name="configProfile" ref="minaZKConfig" />
+  </bean>
+  
+  <bean id="commonConfig" class="com.dangdang.config.service.zookeeper.ZookeeperConfigGroup">
+    <constructor-arg name="node" value="common" />
+    <constructor-arg name="configProfile" ref="minaZKConfig" />
+  </bean>
+
+  <bean id="desPlusService" class="com.dangdang.mina.common.service.DESPlusService">
+    <constructor-arg name="strKey" value="CUP" /><!--切勿调整此值-->
+  </bean>
+  
+  	<bean id="messageMapping" class="com.dangdang.mina.controller.response.base.MessageMapping">
+		<constructor-arg name="msgMappingFile" value="response-status.properties"></constructor-arg>
+	</bean>
+
+  <bean class="com.dangdang.mina.biz.BookLetterBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.SuspendBarBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.ActivitySubjectsBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.NineNineBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.RedActivityEnvelopBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.OrderShareCouponInfoBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.ClassifyInfoBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.IndexPopRuleBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.IndexDecorationBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.HomeFeedBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.ClockBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.ClockCouponBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.NewCustCouponBusiness"></bean>
+
+  <bean class="com.dangdang.mina.biz.LowPriceMarketBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.CouponFeedBusiness"/>
+  <bean class="com.dangdang.mina.biz.QMatchBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.QMatchScopeBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.QmatchHomeBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.QMatchStartBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.QMatchRaceBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.SwellBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.ViewFootprintBusiness"></bean>
+  <bean class="com.dangdang.mina.biz.BannerConfigBusiness"></bean>
+
+
+</beans>

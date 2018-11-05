@@ -1,0 +1,31 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka/
+server:
+  port: 8088
+
+hystrix:
+  metrics:
+    enabled: true
+    polling-interval-ms: 2000
+spring:
+  datasource:
+    username: mina_api
+    password: mina_api58m#YkrD
+    url: jdbc:mysql://mycatminaapi.db:8066/mina_api?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  application:
+    name: mina-portal
+  zipkin:
+      base-url: http://localhost:9999
+  sleuth:
+    sampler:
+      percentage: 1.0
+logging:
+  config: classpath:logback.xml
+  path: /log/log/springcloud-mina.log
+  level: com.springcloud.minaportal
+
+

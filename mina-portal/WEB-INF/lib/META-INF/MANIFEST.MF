@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Vendor: Pivotal Software, Inc.
+Implementation-Title: mina-business
+Implementation-Version: 1.0.0
+Implementation-Vendor-Id: com.dangdang.minaapi
+Built-By: wuqisheng
+Build-Jdk: 1.7.0_67
+Created-By: Apache Maven 3.3.3
+Implementation-URL: http://maven.apache.org
+Archiver-Version: Plexus Archiver
+

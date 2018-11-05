@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd              
+             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	
+	<bean id="webLogger" class="com.dangdang.mina.common.log.WebLogger"></bean>
+	<bean id="paramChecker" class="com.dangdang.mina.common.aspect.RequestParamChecker">
+		<property name="encodeStrMap">
+			<map>
+				<entry key="mina" value="pond757heag7qg39ew8fvq38g8943yt="></entry>
+			</map>
+		</property>
+		<property name="messageMapping" ref="messageMapping">
+		</property>
+	</bean>
+	<bean id="userInfoFetcher" class="com.dangdang.mina.common.aspect.UserInfoFetcher"></bean>
+	<bean id="userLoginChecker" class="com.dangdang.mina.common.aspect.UserLoginCheck"></bean>
+
+	<bean id="apiIdMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="/navi/get" value="1" />
+				<entry key="/bookletter/get_bl" value="2"></entry>
+				<entry key="/bookletter/create_bl" value="3"></entry>
+				<entry key="/activity/subjects" value="4"></entry>
+				<entry key="/activity/result" value="5"></entry>
+				<entry key="/activity/info" value="6"></entry>
+				<entry key="/activity/coupon" value="7"></entry>
+				<entry key="/ninenine/productInfos" value="8"></entry>
+				<entry key="/order_red/rules" value="9"></entry>
+				<entry key="/order_red/award" value="10"></entry>
+				<entry key="/pintuan_red_envelop/promotion_info" value="11"></entry>
+				<entry key="/pop_role/get" value="12"></entry>
+				<entry key="/view_footprint/collect" value="13"></entry>
+				<entry key="/view_footprint/list" value="14"></entry>
+				<entry key="/view_footprint/delete" value="15"></entry>
+				<entry key="/decoration/getIndexData" value="16"></entry>
+				<entry key="/home/feed" value="17"></entry>
+				<entry key="/newCust/popIndex" value="18"></entry>
+				<entry key="/newCust/getRule" value="19"></entry>
+				<entry key="/newCust/getSmsVcode" value="20"></entry>
+				<entry key="/newCust/verificateTel" value="21"></entry>
+				<entry key="/qmatch/start" value="22"></entry>
+				<entry key="/qmatch/match" value="23"></entry>
+				<entry key="/qmatch/newRound" value="24"></entry>
+				<entry key="/qmatch/roundAnswer" value="25"></entry>
+				<entry key="/qmatch/profile" value="26"></entry>
+				<entry key="/qmatch/race" value="27"></entry>
+				<entry key="/qmatch/home" value="28"></entry>
+				<entry key="/clock/rule" value="29"></entry>
+				<entry key="/clock/statClockMoney" value="30"></entry>
+				<entry key="/clock/todayClockMoneyRecord" value="31"></entry>
+				<entry key="/clock/selfClockAction" value="32"></entry>
+				<entry key="/clock/helpClockAction" value="33"></entry>
+				<entry key="/clock/todayHelpClockRecord" value="34"></entry>
+				<entry key="/clock/clockMoneyRecord" value="35"></entry>
+				<entry key="/clock/couponList" value="36"></entry>
+				<entry key="/clock/exchangeCoupon" value="37"></entry>
+				<entry key="/clock/clockInlet" value="38"></entry>
+				<entry key="/swell/rule" value="39"></entry>
+				<entry key="/swell/selfSwellAction" value="40"></entry>
+				<entry key="/swell/helpSwellAction" value="41"></entry>
+				<entry key="/swell/selfClockAction" value="42"></entry>
+				<entry key="/swell/exchangeCoupon" value="43"></entry>
+				<entry key="/swell/couponList" value="44"></entry>
+				<entry key="/swell/swellMoneyRecord" value="45"></entry>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="loggerMap" class="java.util.HashMap"></bean>
+
+	<bean id="monitorAgent" class="com.dangdang.mina.common.log.MonitorAgent" >
+		<constructor-arg name="apiIdMap" ref="apiIdMap" />
+		<constructor-arg name="providerSystemId" value="170" />
+		<constructor-arg name="loggerMap" ref="loggerMap" />
+	</bean>
+	
+	<bean id="threadLocalInit" class="com.dangdang.mina.common.aspect.ThreadLocalInitializer"></bean>
+		
+	<aop:config>
+		<aop:pointcut id="web-request" expression="execution(public * com.dangdang.mina.controller.*.*(..))" />
+		
+		<aop:aspect id="threadLocalInitAspect" ref="threadLocalInit">
+			<aop:around pointcut-ref="web-request" method="handlerApect" />
+		</aop:aspect>
+		<aop:aspect id="monitorAgentAspect" ref="monitorAgent">                
+			<aop:around pointcut-ref="web-request" method="handlerApect" />
+ 		</aop:aspect>
+ 		<aop:aspect id="userInfoFetcherAspect" ref="userInfoFetcher">                
+			<aop:around pointcut-ref="web-request" method="handlerApect" />
+ 		</aop:aspect>
+		<aop:aspect id="webLoggerAspect" ref="webLogger">                
+			<aop:around pointcut-ref="web-request" method="handlerApect" />
+ 		</aop:aspect>
+ 		<!-- <aop:aspect id="paramCheckerAspect" ref="paramChecker">     
+			<aop:around pointcut-ref="web-request" method="handlerApect" />
+ 		</aop:aspect> -->
+ 		<!-- <aop:aspect id="userInfoFetcherAspect" ref="userInfoFetcher">                
+			<aop:around pointcut-ref="web-request" method="handlerApect" />
+ 		</aop:aspect> -->
+ 		<aop:aspect id="userLoginCheckerAspect" ref="userLoginChecker">                
+			<aop:around pointcut-ref="web-request" method="handlerApect" />
+ 		</aop:aspect>
+	</aop:config>
+	
+	
+	
+</beans>  

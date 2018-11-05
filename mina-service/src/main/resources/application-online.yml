@@ -1,0 +1,41 @@
+server:
+  port: 10002
+spring:
+  datasource:
+      username: mina_api
+      password: mina_api58m#YkrD
+      url: jdbc:mysql://mycatminaapi.db:8066/mina_api?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+      driver-class-name: com.mysql.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+  application:
+    name: mina-service
+  zipkin:
+      base-url: http://localhost:9999
+  sleuth:
+    sampler:
+      percentage: 1.0    #0.1--1.0  链路跟踪的数据上传的概率是多大
+  redis:
+    cluster:
+      nodes: 10.4.15.123:8381,10.4.15.124:8381,10.4.15.125:8381,10.4.15.123:8382,10.4.15.124:8382,10.4.15.125:8382
+      max-redirects: 3
+    timeout: 500
+  cache:
+    ehcache:
+      config: classpath:ehcache-config.xml
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1111/eureka/
+  instance:
+    prefer-ip-address: true
+logging:
+  path: /Users/logs/mina-service
+  level:
+    com.springcloud.minaservice: info
+ #释放所有端口
+security:
+    enabled: false
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  config-location: classpath:mybatis-config.xml
